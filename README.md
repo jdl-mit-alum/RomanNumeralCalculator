@@ -19,8 +19,8 @@ I have worked in continuous integration environments
 and am a believer in the agile manifesto.
 
 ## Compile and run
- git clone https://github.com/jdl-mit-alum/RomanNumeralCalculator
- make
+* git clone https://github.com/jdl-mit-alum/RomanNumeralCalculator
+* make
 
 # Roman Numeral Calculator
 
