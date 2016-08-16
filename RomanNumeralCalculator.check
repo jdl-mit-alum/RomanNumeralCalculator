@@ -1,0 +1,142 @@
+#include <stdlib.h>
+#include "RomanNumeralCalculator.h"
+
+#define ROMANMAX 3999
+#define RANGEMAX 50
+/* RANGEMAX is used to limit inner loops to prevent check timeouts */
+
+/*****************************************************************************/
+/* Service functions to test whether operations work. */
+/* execute RomanToArabic and test for expected value. */
+int r2aWorks(int expect, char *source) {
+    int Arabic = RomanToArabic(source);
+    int result = (int)(Arabic == expect);
+    return result;
+}
+
+/* execute ArabicToRoman; test for expected value with cleanup. */
+int a2rWorks(char *expect, int source) {
+    char *Roman = ArabicToRoman(source);
+    int result = (int)(!strcmp(Roman, expect));
+    free(Roman);
+    return result;
+}
+
+/* execute Roman to Arabic to Roman; test for expected value with cleanup. */
+int cycleWorks(int expect) {
+    char *Roman = ArabicToRoman(expect);
+    int Arabic = RomanToArabic(Roman);
+    free(Roman);
+    return (int)(Arabic == expect);
+}
+
+/* execute ADD; test for expected value with cleanup. */
+int addWorks(char *expect, char *left, char *right) {
+    char *Roman = RNC_add(left, right);
+    int result = (int)(!strcmp(Roman, expect));
+    free(Roman);
+    return result;
+}
+
+/* execute SUB; test for expected value with cleanup. */
+int subWorks(char *expect, char *left, char *right) {
+    char *Roman = RNC_sub(left, right);
+    int result = (int)(!strcmp(Roman, expect));
+    free(Roman);
+    return result;
+}
+
+int addIWorks(int expect, int left, int right) {
+    char *eRoman = ArabicToRoman(expect);
+    char *lRoman = ArabicToRoman(left);
+    char *rRoman = ArabicToRoman(right);
+    char *aRoman = RNC_add(lRoman, rRoman);
+    int result = (int)(!strcmp(aRoman, eRoman));
+    free(aRoman);
+    free(rRoman);
+    free(lRoman);
+    free(eRoman);
+    return result;
+}
+
+int subIWorks(int expect, int left, int right) {
+    char *eRoman = ArabicToRoman(expect);
+    char *lRoman = ArabicToRoman(left);
+    char *rRoman = ArabicToRoman(right);
+    char *aRoman = RNC_sub(lRoman, rRoman);
+    int result = (int)(!strcmp(aRoman, eRoman));
+    free(aRoman);
+    free(rRoman);
+    free(lRoman);
+    free(eRoman);
+    return result;
+}
+
+/*****************************************************************************/
+/* unit tests using the service functions. */
+/* fully exhaustive tests trip the 4 second test limit alarm. */
+
+#suite Test_Roman_Numeral_Calculator_Primitives
+
+#test a_few_minor_tests_of_Roman_to_Arabic
+    fail_unless(r2aWorks(1000, "M"));
+    fail_unless(r2aWorks(100, "C"));
+    fail_unless(r2aWorks(4, "IV"));
+
+#test a_few_minor_tests_of_Arabic_to_Roman
+    fail_unless(a2rWorks("M", 1000));
+
+#test specific_values_given_in_problem_description
+    fail_unless(RomanToArabic("MMMCMXCIX") == 3999);
+    fail_unless(addWorks("LXXIV", "XIV", "LX"));
+    fail_unless(addWorks("XXII", "XX", "II"));
+    fail_unless(addWorks("IV", "II", "II"));
+
+#test a_few_additions_because_exhaustive_is_possible
+    fail_unless(addWorks("II", "I", "I"));
+    fail_unless(addWorks("M", "D", "D"));
+
+#test a_few_subtractions_because_exhaustive_is_possible
+    fail_unless(subWorks("I", "II", "I"));
+    fail_unless(subWorks("III", "IV", "I"));
+    fail_unless(subWorks("D", "M", "D"));
+
+#test exhaustive_Arabic_To_Roman_To_Arabic_cycle
+    for (int index=1; index<=ROMANMAX; index++) fail_unless(cycleWorks(index));
+
+#test partially_exhaustive_add_range_low
+    for (int j=1; j<ROMANMAX; j++) {
+        for (int i=1; i < RANGEMAX && (i+j) <= ROMANMAX; i++) {
+            fail_unless(addIWorks(i+j, i, j));
+            fail_unless(addIWorks(i+j, j, i));
+        }
+    }
+
+#test partially_exhaustive_add_range_high
+    int h = ROMANMAX-RANGEMAX;
+    for (int j=1; j<ROMANMAX; j++) {
+        for (int i=1; i < RANGEMAX && (h+i+j) <= ROMANMAX; i++) {
+            fail_unless(addIWorks(h+i+j, h+i, j));
+            fail_unless(addIWorks(h+i+j, j, h+i));
+        }
+    }
+
+#test partially_exhaustive_sub_range_low
+    for (int j=1; j<ROMANMAX; j++) {
+        for (int i=1; i < RANGEMAX && (j-i) >= 1; i++) {
+            fail_unless(subIWorks(j-i, j, i));
+        }
+    }
+
+#test partially_exhaustive_sub_range_high
+    int h = ROMANMAX-RANGEMAX;
+    for (int j=1; j<ROMANMAX; j++) {
+        for (int i=1; i < RANGEMAX && (j-(h+i)) >= 1; i++) {
+            fail_unless(subIWorks(j-(h+i), j, h+i));
+        }
+    }
+
+#test forced_failures_to_check_for_misbehavior
+    fail_unless(RomanToArabic("DD") == 0);
+
+/*****************************************************************************/
