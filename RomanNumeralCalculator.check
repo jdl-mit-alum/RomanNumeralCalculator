@@ -2,8 +2,10 @@
 #include "RomanNumeralCalculator.h"
 
 #define ROMANMAX 3999
-#define RANGEMAX 50
-/* RANGEMAX is used to limit inner loops to prevent check timeouts */
+#define RANGEMAX 5
+/* RANGEMAX is used to limit inner loops to prevent check timeouts. */
+/* In a VirtualBox ubuntu 16.10 guest hosted on a MacOS host 5 is the limit. */
+/* In native MacOS 100 is still usable. */
 
 /*****************************************************************************/
 /* Service functions to test whether operations work. */
