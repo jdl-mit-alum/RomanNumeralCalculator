@@ -20,6 +20,7 @@ and am a believer in the agile manifesto.
 
 ## Compile and run
 * git clone https://github.com/jdl-mit-alum/RomanNumeralCalculator
+* cd RomanNumeralCalculator
 * make
 
 # Roman Numeral Calculator
