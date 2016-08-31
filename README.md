@@ -43,6 +43,7 @@ Running suite(s): Test_Roman_Numeral_Calculator_Primitives
 100%: Checks: 11, Failures: 0, Errors: 0
 $ make clean
 ```
+I recommend running "make clean" to restore the code to pristine deliverable.
 
 # Roman Numeral Calculator
 
