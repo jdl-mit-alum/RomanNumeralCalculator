@@ -34,6 +34,14 @@ and am a believer in the agile manifesto.
 * cd RomanNumeralCalculator
 * make
 
+## Expect output
+Note that I inluded the date time stamp as first output.
+ $ make
+ 20160831095002
+ Running suite(s): Test_Roman_Numeral_Calculator_Primitives
+ 100%: Checks: 11, Failures: 0, Errors: 0
+ $
+
 # Roman Numeral Calculator
 
 For this programming exercise, you will be creating a library which will allow the addition and subtraction of
