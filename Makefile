@@ -25,7 +25,7 @@ $(TEST):	$(TEST).c $(MODULE).a
 		-o $@ \
 		$< \
 		$(MODULE).a \
-		`pkg-config --cflags --libs check`
+		`pkg-config --cflags --libs check` \
 		-L/opt/local/lib \
 		-lcheck
 
