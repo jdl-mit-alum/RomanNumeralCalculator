@@ -18,6 +18,17 @@ whether with tmux/skype or lync or join.me.
 I have worked in continuous integration environments
 and am a believer in the agile manifesto.
 
+## Update from previous version
+* Added "-std=gnu99" to Makefile compile for test.
+
+## Environment
+* New virtualbox ubuntu 14.04.4 installed
+* sudo apt-get install git
+* browse to https://github.com/libcheck/check/releases
+* download download/0.10.0/check-0.10.0.tar.gz
+* tar xvzf check-0.10.0.tar.gz
+* cd check-0.10.0; ./configure; make; sudo make install
+
 ## Compile and run
 * git clone https://github.com/jdl-mit-alum/RomanNumeralCalculator
 * cd RomanNumeralCalculator

@@ -18,6 +18,7 @@ clean:
 
 $(TEST):	$(TEST).c $(MODULE).a
 	@gcc \
+		-std=gnu99 \
 		-Wall \
 		-I/opt/local/include \
 		-I. \
